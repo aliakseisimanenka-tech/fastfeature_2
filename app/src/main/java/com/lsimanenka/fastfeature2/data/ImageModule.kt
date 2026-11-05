@@ -26,14 +26,21 @@ abstract class ImageModule {
        // val api : NetworkApi =
        //     Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build().create()
 
-        private val json = Json {
+
+        //TODO 1: Can use provide for creating dependencies
+        fun createDefaultJson(): Json = Json {
             ignoreUnknownKeys = true
             coerceInputValues = true
         }
 
         @Provides
+        fun provideJson(): Json = createDefaultJson()
+
+        @Provides
         @Singleton
-        fun providesRetrofit() : Retrofit {
+        fun providesRetrofit(
+            json: Json,
+        ) : Retrofit {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(json.asConverterFactory("application/json; charset=UTF8".toMediaType()))

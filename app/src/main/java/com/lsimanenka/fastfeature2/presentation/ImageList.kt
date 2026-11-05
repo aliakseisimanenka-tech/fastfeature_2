@@ -12,10 +12,14 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun ImageList(imageUrls: List<String>, modifier: Modifier) {
+fun ImageList(
+    modifier: Modifier = Modifier,
+    imageUrls: List<String>,
+) {
 
     LazyColumn(
         modifier = modifier,
+        //TODO 7: Create an object for default values
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
