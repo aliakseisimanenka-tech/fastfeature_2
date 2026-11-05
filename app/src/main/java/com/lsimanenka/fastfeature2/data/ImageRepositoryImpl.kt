@@ -8,14 +8,15 @@ class ImageRepositoryImpl @Inject constructor(
 ) : ImageRepository {
 
     //TODO 6: You can check ability to use Result for return type
-    override suspend fun getImages(): List<String> {
-        val dto = api.getImages()
+    override suspend fun getImages(): Result<List<String>> = runCatching  {
+        val dto = api.getImages(10)
         //TODO 4: enum class for status
-        if (dto.status == "success") {
-            return dto.message
+        val status = ApiStatus.fromString(dto.status)
+
+        if (status == ApiStatus.SUCCESS) {
+            dto.message
         } else {
-            //TODO 5: ok for quick feature writing
-            throw Exception("Invalid message status")
+            throw IllegalStateException("Invalid message status: ${dto.status}")
         }
     }
 

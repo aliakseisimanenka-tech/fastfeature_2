@@ -25,12 +25,14 @@ class ImageViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = ImageState.Loading
 
-            try {
-                val data = repository.getImages()
-                _state.value = ImageState.Success(data)
-            } catch (e : Exception) {
-                _state.value = ImageState.Error(e.message ?: "Unexpected error")
-            }
+            repository.getImages()
+                .onSuccess {
+                    _state.value = ImageState.Success(it)
+                }
+                .onFailure {
+                    _state.value = ImageState.Error(it.localizedMessage ?: "Unknown error")
+                }
+
         }
     }
 
